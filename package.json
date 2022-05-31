@@ -1,7 +1,7 @@
 {
   "name": "@xylocone/create-block-theme",
   "version": "v0.0.0-alpha",
-  "description": "A scaffolding tool to quickly generate a Wordpress Block theme (aka Full Site Editing theme)",
+  "description": "A scaffolding tool to generate a Block theme, with a dev environment set up to add blocks to the theme",
   "main": "./package/index.js",
   "type": "module",
   "bin": {
