@@ -1,0 +1,36 @@
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+
+module.exports = {
+  entry: "./tailwind.src.scss",
+  output: {
+    filename: "tailwind.output.js",
+    path: __dirname,
+  },
+  mode: "production",
+  module: {
+    rules: [
+      {
+        test: /\.scss$/i,
+        use: [
+          MiniCssExtractPlugin.loader,
+          "css-loader",
+          "postcss-loader",
+          "sass-loader",
+        ],
+      },
+    ],
+  },
+  optimization: {
+    minimizer: [new CssMinimizerPlugin()],
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: "tailwind.build.css",
+    }),
+  ],
+  devServer: {
+    static: "dist",
+    watchContentBase: true,
+  },
+};
