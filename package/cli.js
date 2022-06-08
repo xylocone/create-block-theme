@@ -168,11 +168,9 @@ async function initGitRepo() {
  * Install all the dependencies and devDependencies listed in the copied template's package.json
  */
 async function installDependencies() {
-  (
-    await execaCommand("npm install", {
-      cwd: resolve(process.cwd(), options.slug),
-    })
-  ).stdout.pipe(process.stdout);
+  await execaCommand("npm install", {
+    cwd: resolve(process.cwd(), options.slug),
+  });
 }
 
 /**
