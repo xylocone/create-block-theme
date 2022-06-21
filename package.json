@@ -1,6 +1,6 @@
 {
   "name": "@xylocone/create-block-theme",
-  "version": "v0.0.0-alpha",
+  "version": "v0.0.0-alpha-1",
   "description": "A scaffolding tool to generate a Block theme, with a dev environment set up to add blocks to the theme",
   "main": "./package/index.js",
   "type": "module",
