@@ -1,18 +1,42 @@
-import { resolve, join, relative } from "path";
-import { rename, copyFile, mkdir } from "fs/promises";
+import {
+  resolve,
+  join,
+  relative
+} from "path";
+import {
+  rename,
+  copyFile,
+  mkdir
+} from "fs/promises";
 import url from "url";
-import { execaCommand } from "execa";
+import {
+  execaCommand
+} from "execa";
 import Scaffold from "scaffold-generator";
 import mustache from "mustache";
-import { capitalCase } from "change-case";
-import { Listr } from "listr2";
+import {
+  capitalCase
+} from "change-case";
+import {
+  Listr
+} from "listr2";
 import yargs from "yargs";
-import { walk } from "@root/walk";
+import {
+  walk
+} from "@root/walk";
 
 // Internal dependencies
-import { askQuestions } from "./utils/askQuestions.js";
-import { askUntilAnswered } from "./utils/askUntilAnswered.js";
-import { success, error, warning } from "./utils/inform.js";
+import {
+  askQuestions
+} from "./utils/askQuestions.js";
+import {
+  askUntilAnswered
+} from "./utils/askUntilAnswered.js";
+import {
+  success,
+  error,
+  warning
+} from "./utils/inform.js";
 
 const ALLOWED_TEMPLATE_TYPES = ["plain", "tailwind"];
 
@@ -28,8 +52,7 @@ let options = {};
  * @param {Array} args Command line arguments
  */
 export async function cli(args) {
-  const tasks = [
-    {
+  const tasks = [{
       title: "Copying template files",
       task: async () => await copyTemplateFiles(),
     },
@@ -43,7 +66,9 @@ export async function cli(args) {
     },
   ];
 
-  const listr = new Listr(tasks, { concurrent: false });
+  const listr = new Listr(tasks, {
+    concurrent: false
+  });
 
   try {
     const parsedArgs = yargs(args).argv;
@@ -69,8 +94,7 @@ async function assignOptions(args) {
       message: "Theme Slug: ",
     }));
 
-  const questions = [
-    {
+  const questions = [{
       name: "title",
       message: "Theme Title: ",
       default: capitalCase(options.slug),
@@ -99,8 +123,7 @@ async function assignOptions(args) {
 
   // For each defaultOption, if the corresponding answer is empty, use the defaultOption
   // and override the result with the values already existing in options
-  options = Object.assign(
-    {},
+  options = Object.assign({},
     ...Object.keys(defaultOptions).map((key) => ({
       [key]: answers[key] || defaultOptions[key],
     })),
@@ -161,18 +184,18 @@ async function renameCopiedFiles() {
  * Initialize an empty git repository in the process' cwd
  */
 async function initGitRepo() {
-  await execaCommand("git init", { cwd: resolve(process.cwd(), options.slug) });
+  await execaCommand("git init", {
+    cwd: resolve(process.cwd(), options.slug)
+  });
 }
 
 /**
  * Install all the dependencies and devDependencies listed in the copied template's package.json
  */
 async function installDependencies() {
-  (
-    await execaCommand("npm install", {
-      cwd: resolve(process.cwd(), options.slug),
-    })
-  ).stdout.pipe(process.stdout);
+  await execaCommand("npm install", {
+    cwd: resolve(process.cwd(), options.slug),
+  });
 }
 
 /**
@@ -189,7 +212,8 @@ function getTemplateDirectory(templateType) {
     templateType = "plain";
   }
   return resolve(
-    url.fileURLToPath(import.meta.url),
+    url.fileURLToPath(
+      import.meta.url),
     `../templates/${templateType}`
   );
 }
